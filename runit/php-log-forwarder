@@ -1,0 +1,8 @@
+#!/bin/bash
+# Forwards the php5-fpm error.log to the Docker logs.
+set -e
+if [[ -e /var/log/php5-fpm.log ]]; then
+	exec tail -F /var/log/php5-fpm.log
+else
+	exec sleep 10
+fi
