@@ -28,30 +28,17 @@ RUN set -e                                && \
     cp /_tmp/cfg/default-site /etc/nginx/sites-available/default && \
     rm -rf /_tmp
 
+##############################################################
+########### changes in PHP config files ######################
+##############################################################
 
-#### changes in config files
+## /etc/php5/fpm/php.ini
 
-## /etc/php5/fpm/php.ini:
+## cgi.fix_pathinfo=1       => cgi.fix_pathinfo=0          # required for php-fpm
+## upload_max_filesize = 2M => upload_max_filesize = 100M  # discussable
+## post_max_size = 8M       => post_max_size = 100M        # discussable
 
-## cgi.fix_pathinfo=1       => cgi.fix_pathinfo=0
-## upload_max_filesize = 2M => upload_max_filesize = 100M
-## post_max_size = 8M       => post_max_size = 100M
-##
-## /etc/php5/fpm/php-fpm.conf:
-##
-## daemonize = yes          => daemonize = no
-##
-## NOT CHANGED :
-##
-##
-## /etc/php5/fpm/pool.d/www.conf:
-##
-## pm.max_children = 5      => pm.max_children = 9
-## pm.start_servers = 2     => pm.start_servers = 3
-## pm.min_spare_servers = 1 => pm.min_spare_servers = 2
-## pm.max_spare_servers = 3 => pm.max_spare_servers = 4
-## pm.max_requests = 500    => pm.max_requests = 200
-## listen.mode = 0660       => listen.mode = 0750     ?????????
+## /etc/php5/fpm/php-fpm.conf
 
-## ????
-#find /etc/php5/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
+## daemonize = yes        => daemonize = no         # required by runit
+## systemd_interval = 10  => systemd_interval = 0   # no systemd in our setup
