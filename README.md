@@ -4,7 +4,7 @@
 
 NGINX and PHP running in a Docker Container.
 
-special features:
+**Special Features:**
   
   * logforwarding of nginx and php to stdout 
   * see features of base image (pid 1 reaping problem, dynamic user remapping ...)
@@ -18,7 +18,7 @@ I'm completely aware that it is somewhat against the Docker philosophy to run bo
 
 **The benefits of combining both?**
 
-Ease of use. No hassles with orchestration. You need an instance? Spin it up with a single docker command with port mapping and binding to an external document root and you are done. It's simply a block box after all.
+Ease of use. No hassles with orchestration. You just need a single instance? Spin it up with one docker command including port mapping(s) and binding to an external document root and you are done. Tear it down with one command. After all it's just a black box. It's only a minor technical detail that there are more than one process involved. You wouldn't separate the nginx master from it's workers either, would you? Php is only a different kind of worker.
 
 ### Possible improvements:
 
