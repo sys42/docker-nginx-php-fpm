@@ -12,8 +12,10 @@ echo
 
 trap ctrl_c INT
 
-count=0
+calls=0
+bytes=0
 page="$1"
+
 
 starttime=$(($(date +%s%N)/1000000))
 
@@ -23,9 +25,12 @@ getStatistics () {
    runtime=$(awk "BEGIN {printf \"%.2f\",${millis}/1000}")
 
    ## may run into div zero error -> i don't care ...
-   persec=$(awk "BEGIN {printf \"%.2f\",${count}/${runtime}}") 2>&1 >/dev/null
+   callspersec=$(awk "BEGIN {printf \"%.2f\",${calls}/${runtime}}") 2>&1 >/dev/null
+   kbpersec=$(awk "BEGIN {printf \"%.2f\",${bytes}/(${runtime}*1024)}") 2>&1 >/dev/null
+   mbs=$(awk "BEGIN {printf \"%.2f\",${bytes}/(1024*1024)}") 2>&1 >/dev/null
 
-   echo "#$count | $persec #/s | time: ${runtime}s"
+
+   echo "#$calls | $callspersec #/s | $kbpersec kB/s | time: ${runtime}s | i/o: $mbs MB"
 }
 
 ctrl_c () {
@@ -36,9 +41,10 @@ ctrl_c () {
 
 
 while true; do
-  curl -s $page > /dev/null
-  count=$((count+1))
-  if [ $(( count % 10 )) -eq 0 ]; then      
+  _bytes=$(curl -s "$page" | wc --bytes)
+  bytes=$((bytes+_bytes))
+  calls=$((calls+1))
+  if [ $(( calls % 10 )) -eq 0 ]; then      
      echo -en "\033[s$(getStatistics)\033[u"
   fi
 done
