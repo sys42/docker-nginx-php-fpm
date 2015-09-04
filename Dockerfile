@@ -1,4 +1,4 @@
-FROM sys42/docker-nginx:1.0.0
+FROM sys42/docker-nginx:1.1.0
 MAINTAINER Tom Nussbaumer <thomas.nussbaumer@gmx.net>
 
 ADD . /_tmp
