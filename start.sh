@@ -7,7 +7,7 @@ daemonize () {
 }
 
 interactive_without_mount () {
-  docker run -ti --rm -p 30000:80 $(cat REPO_AND_VERSION) /sbin/my_init -- bash
+  docker run -ti --rm -p 30000:80 $(cat REPO_AND_VERSION) bash
 }
 
 [ $# -ne 0 ] && daemonize "$1" || interactive_without_mount
